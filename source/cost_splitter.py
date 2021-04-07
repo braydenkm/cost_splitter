@@ -1,8 +1,6 @@
 import sys
 import os
-# sys.path.append("C:\\Users\\Brayden\\Documents\\Code\\cost_splitter\\source\\classes")
 sys.path.append(os.path.join(os.path.dirname(__file__), "classes"))
-print(sys.path)
 
 import Group
 

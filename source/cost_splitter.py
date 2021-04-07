@@ -12,8 +12,10 @@ def print_group_menu(group_name):
     + group_name + "] Menu\n" \
     " 1. Print Group\n" \
     " 2. Add Purchase\n" \
-    " 3. Add Member\n" \
-    " 4. Remove Member\n" \
+    " 3. List Transactions\n" \
+    " 4. List Members\n" \
+    " 5. Add Member\n" \
+    " 6. Remove Member\n" \
     " q or exit. Quit\n" \
     " > ", end="")
 
@@ -39,8 +41,26 @@ def group_menu(group):
       amount_paid = int(input())
       group.add_purchase(group.members[paying_member], amount_paid)
 
-    # Add new member.
+    # List transactions.
     if user_in == '3':
+      if len(group.transactions) == 0:
+        print('No past transactions')
+        continue
+      print('Past Transactions')
+      for purchase in group.transactions:
+        print('  ' + purchase.as_string())
+
+    # List members.
+    if user_in == '4':
+      if len(group.members) == 0:
+        print('No members in group')
+        continue
+      print('Group Members')
+      for person in group.members:
+        print('  ' + group.members[person].as_string())
+
+    # Add new member.
+    if user_in == '5':
       print('Enter name of member to add: ', end='')
       member_name = input()
       if member_name in group.members:
@@ -49,7 +69,7 @@ def group_menu(group):
       group.add_member(member_name)
     
     # Remove existing member.
-    if user_in == '4':
+    if user_in == '6':
       print('Enter name of member to remove: ', end='')
       member_name = input()
       if member_name not in group.members:
@@ -84,6 +104,9 @@ def main():
 
     # Print groups.
     if user_in == '1':
+      if len(groups) == 0:
+        print('No stored groups')
+        continue
       print('Stored Groups:')
       for group_name in groups:
         groups[group_name].print_group()
@@ -114,6 +137,7 @@ def main():
         print('"' + group_name+ '" cannot be found in list of groups.')
         continue
       groups.pop(group_name)
+
 
 if __name__ == '__main__':
   main()

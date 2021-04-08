@@ -1,11 +1,17 @@
 import pickle
 import os
 
+SAVE_LOCATION = './saves/'
+
+
+# Returns a path to save file.
+def make_path(filename):
+  return SAVE_LOCATION + filename + '.pkl'
+
 
 # Save a single group, this will overwrite an existing save.
 def save_group(group):
-  filename = './saves/' + group.name + '.pkl'
-  save_object(group, filename)
+  save_object(group, make_path(group.name))
 
 
 # Save a single object to filename.
@@ -16,7 +22,7 @@ def save_object(obj, filename):
 
 # Returns a dictionary of all saved groups.
 def load_all_groups():
-  return load_all('./saves', '.pkl')
+  return load_all(SAVE_LOCATION, '.pkl')
 
 
 # Loads a single object from filename.
@@ -34,22 +40,19 @@ def load_all(directory, extension):
     os.makedirs(directory)
   for filename in os.listdir(directory):
     if filename.endswith(extension):
-      obj = load_object(directory+ '/' + filename)
+      obj = load_object(directory + filename)
       objects[obj.name] = obj
   return objects
 
 
 # Delete a group from saves.
 def delete_group(group):
-  directory = './saves'
-  filename = group.name + '.pkl'
-  delete_object(directory, filename)
+  delete_object(make_path(group.name))
 
 
 # Delete an object file from directory.
-def delete_object(directory, filename):
-  file_path = directory + '/' + filename
-  if os.path.exists(file_path):
-    os.remove(file_path)
+def delete_object(filepath):
+  if os.path.exists(filepath):
+    os.remove(filepath)
   else:
     print('ERR: File could not be found')

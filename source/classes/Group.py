@@ -54,8 +54,10 @@ class Group:
   
 
   # Remove a member to a group.
-  # TODO not taking into account existing balance.
   def remove_member(self, member_name):
+    if self.members[member_name].balance != 0:
+      print('Member cannot be removed until balance equals $0')
+      return
     self.members.pop(member_name)
 
 

@@ -7,11 +7,18 @@ import Group
 import saving as s
 
 
+# List the group names.
+def list_group_names(groups):
+  string = ''
+  for name in groups:
+    string += '  ' + name + '\n'
+  print(string)
+
+
 # Prints group menu options.
 def print_group_menu(group_name):
     print(
-    "\n[" \
-    + group_name + "] Menu\n" \
+    "\n[" + group_name + "] - Group Menu\n" \
     " 1. Print Group\n" \
     " 2. Add Purchase\n" \
     " 3. List Transactions\n" \
@@ -28,6 +35,7 @@ def group_menu(group):
   while user_in != 'exit' and user_in != 'q':
     print_group_menu(group.name)
     user_in = input()
+    print('\n')
 
     # Print group.
     if user_in == '1':
@@ -42,6 +50,7 @@ def group_menu(group):
       print('How much did the purchase cost?: ', end='')
       amount_paid = int(input())
       group.add_purchase(group.members[paying_member], amount_paid)
+      s.save_group(group)
 
     # List transactions.
     if user_in == '3':
@@ -69,6 +78,7 @@ def group_menu(group):
         print('"' + member_name+ '" already exists in list of members.')
         continue
       group.add_member(member_name)
+      s.save_group(group)
     
     # Remove existing member.
     if user_in == '6':
@@ -78,12 +88,12 @@ def group_menu(group):
         print('"' + member_name+ '" cannot be found in list of members.')
         continue
       group.remove_member(member_name)
+      s.save_group(group)
 
 
 # Prints the main menu options.
 def print_main_menu():
   print(
-    "\n" \
     "Main Menu\n" \
     " 1. Print Groups\n" \
     " 2. Select Group\n" \
@@ -96,17 +106,19 @@ def print_main_menu():
 # Entrance to program.
 # Loops through main menu.
 def main():
-  print('- Cost Splitter -')
+  print('\n- Cost Splitter -')
 
   # Load save.
   groups = s.load_all_groups()
   if groups is None:
     groups = {}
 
+  # Loop.
   user_in = ''
   while user_in != 'exit' and user_in != 'q':
     print_main_menu()
     user_in = input()
+    print('')
 
     # Print groups.
     if user_in == '1':
@@ -121,7 +133,11 @@ def main():
     # Select group.
     if user_in == '2':
       print('Which group would you like to select?:')
+      list_group_names(groups)
       group_name = input()
+      if group_name not in groups:
+        print('Group ' + group_name + ' does not exist\n')
+        continue
       group_menu(groups[group_name])
 
     # Add new group.
@@ -138,12 +154,14 @@ def main():
     
     # Remove existing group.
     if user_in == '4':
-      print('Enter name of group to remove: ', end='')
+      print('Enter name of group to remove:')
+      list_group_names(groups)
       group_name = input()
       if group_name not in groups:
         print('"' + group_name+ '" cannot be found in list of groups.')
         continue
-      groups.pop(group_name)
+      deleted_group = groups.pop(group_name)
+      s.delete_group(deleted_group)
 
 
 if __name__ == '__main__':

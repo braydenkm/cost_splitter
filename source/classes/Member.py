@@ -24,5 +24,5 @@ class Member:
 
   # Return Member object information as a string.
   def as_string(self):
-    return 'Name: ' + self.name + ', Balance: ' + str(self.balance)
+    return self.name.ljust(14) + ' Balance: ' + str(self.balance)
     

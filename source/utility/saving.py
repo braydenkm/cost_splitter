@@ -25,6 +25,8 @@ def load_object(filename):
 
 def load_all(directory, extension):
   objects = {}
+  if not os.path.exists(directory):
+    os.makedirs(directory)
   for filename in os.listdir(directory):
     if filename.endswith(extension):
       obj = load_object(directory+ '/' + filename)

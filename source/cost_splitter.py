@@ -1,8 +1,10 @@
 import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), "classes"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "utility"))
 
 import Group
+import saving as s
 
 
 # Prints group menu options.
@@ -95,7 +97,11 @@ def print_main_menu():
 # Loops through main menu.
 def main():
   print('- Cost Splitter -')
-  groups = {}
+
+  # Load save.
+  groups = s.load_all_groups()
+  if groups is None:
+    groups = {}
 
   user_in = ''
   while user_in != 'exit' and user_in != 'q':
@@ -126,6 +132,7 @@ def main():
         print('"' + group_name+ '" already exists in list of groups.')
         continue
       groups[group_name] = Group.Group(group_name)
+      s.save_group(groups[group_name])
       # Select group automatically after creation.
       group_menu(groups[group_name])
     

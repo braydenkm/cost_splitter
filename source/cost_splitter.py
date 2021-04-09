@@ -49,7 +49,9 @@ def group_menu(group):
       paying_member = input()
       print('How much did the purchase cost?: ', end='')
       amount_paid = int(input())
-      group.add_purchase(group.members[paying_member], amount_paid)
+      print('What was purchased?: ', end='')
+      item = input()
+      group.add_purchase(group.members[paying_member], amount_paid, item)
       s.save_group(group)
 
     # List transactions.

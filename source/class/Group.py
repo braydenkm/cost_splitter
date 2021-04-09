@@ -13,8 +13,8 @@ class Group:
 
 
   # Add a new purchase to balance through the group.
-  def add_purchase(self, payer, amount):
-    self.transactions.append(Transaction(amount, payer))
+  def add_purchase(self, payer, amount, label):
+    self.transactions.append(Transaction(amount, payer, label))
     amount_each = amount / self.number_of_members()
     amount_to_payer = amount - amount_each
     
